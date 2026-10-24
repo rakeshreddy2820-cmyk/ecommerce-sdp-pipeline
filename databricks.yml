@@ -1,0 +1,19 @@
+bundle:
+  name: ecommerce-sdp-pipeline
+
+variables:
+  catalog:
+    description: "Target catalog name"
+    default: dev
+
+targets:
+  dev:
+    mode: development
+    default: true
+    variables:
+      catalog: dev
+
+  prod:
+    mode: production
+    variables:
+      catalog: prod
