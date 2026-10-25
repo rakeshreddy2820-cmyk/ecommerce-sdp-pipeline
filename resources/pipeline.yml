@@ -6,7 +6,6 @@ resources:
       schema: bronze
       libraries:
         - file:
-            path: ./src/bronze/ingest.py
+            path: ../src/bronze/ingest.py
       configuration:
         catalog_name: ${var.catalog}
-      development: true
