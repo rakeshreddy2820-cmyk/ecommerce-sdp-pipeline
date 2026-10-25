@@ -1,0 +1,12 @@
+resources:
+  pipelines:
+    ecommerce_sdp:
+      name: "ecommerce-sdp-pipeline [${var.catalog}]"
+      catalog: ${var.catalog}
+      schema: bronze
+      libraries:
+        - file:
+            path: ./src/bronze/ingest.py
+      configuration:
+        catalog_name: ${var.catalog}
+      development: true
