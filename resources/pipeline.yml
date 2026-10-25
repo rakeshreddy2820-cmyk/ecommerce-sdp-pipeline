@@ -4,6 +4,7 @@ resources:
       name: "ecommerce-sdp-pipeline [${var.catalog}]"
       catalog: ${var.catalog}
       schema: bronze
+      serverless: true
       libraries:
         - file:
             path: ../src/bronze/ingest.py
