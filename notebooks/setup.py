@@ -5,20 +5,20 @@
 # MAGIC # Setup: Create Catalogs, Schemas, and Source Tables
 
 # COMMAND ----------
-# Create catalog and all schemas
-spark.sql("CREATE CATALOG IF NOT EXISTS dev")
+dbutils.widgets.text("catalog", "dev")
+CATALOG = dbutils.widgets.get("catalog")
 
-spark.sql("CREATE SCHEMA IF NOT EXISTS dev.kafka_sim")
-spark.sql("CREATE SCHEMA IF NOT EXISTS dev.bronze")
-spark.sql("CREATE SCHEMA IF NOT EXISTS dev.silver")
-spark.sql("CREATE SCHEMA IF NOT EXISTS dev.gold")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {CATALOG}")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.kafka_sim")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.bronze")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.silver")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {CATALOG}.gold")
 
-print("Catalog and schemas created ✓")
+print(f"Catalog '{CATALOG}' and schemas created ✓")
 
 # COMMAND ----------
-# Orders source table (simulates Kafka orders topic)
-spark.sql("""
-  CREATE TABLE IF NOT EXISTS dev.kafka_sim.orders_events (
+spark.sql(f"""
+  CREATE TABLE IF NOT EXISTS {CATALOG}.kafka_sim.orders_events (
     event_id        STRING,
     event_type      STRING,
     event_timestamp TIMESTAMP,
@@ -31,13 +31,11 @@ spark.sql("""
   )
   USING DELTA
 """)
-
 print("orders_events created ✓")
 
 # COMMAND ----------
-# Customers source table (simulates Kafka customers topic)
-spark.sql("""
-  CREATE TABLE IF NOT EXISTS dev.kafka_sim.customers_events (
+spark.sql(f"""
+  CREATE TABLE IF NOT EXISTS {CATALOG}.kafka_sim.customers_events (
     event_id        STRING,
     event_type      STRING,
     event_timestamp TIMESTAMP,
@@ -49,13 +47,11 @@ spark.sql("""
   )
   USING DELTA
 """)
-
 print("customers_events created ✓")
 
 # COMMAND ----------
-# Products source table (simulates Kafka products topic)
-spark.sql("""
-  CREATE TABLE IF NOT EXISTS dev.kafka_sim.products_events (
+spark.sql(f"""
+  CREATE TABLE IF NOT EXISTS {CATALOG}.kafka_sim.products_events (
     event_id        STRING,
     event_type      STRING,
     event_timestamp TIMESTAMP,
@@ -67,9 +63,7 @@ spark.sql("""
   )
   USING DELTA
 """)
-
 print("products_events created ✓")
 
 # COMMAND ----------
-# Verify everything exists
-display(spark.sql("SHOW TABLES IN dev.kafka_sim"))
+display(spark.sql(f"SHOW TABLES IN {CATALOG}.kafka_sim"))
